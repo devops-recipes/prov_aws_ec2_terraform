@@ -23,10 +23,6 @@ variable "inst_ami" {
   description = "Amazon Machine Image for the Instance"
 }
 
-variable "inst_count" {
-  description = "# of instances to provision"
-}
-
 variable "inst_type" {
   description = "type of instances to provision"
 }

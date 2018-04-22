@@ -7,8 +7,7 @@ provider "aws" {
 
 # instances
 resource "aws_instance" "ec2Instances" {
-
-  count = 1 //${var.inst_count}
+  count = 1
   ami = "${var.inst_ami}"
   availability_zone = "${lookup(var.availability_zone, var.vpc_region)}"
   instance_type = "${var.inst_type}"
