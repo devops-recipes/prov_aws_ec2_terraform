@@ -70,7 +70,10 @@ jobs:
   - name: deprov_aws_ec2_tf
     type: runSh
     steps:
+      - IN: aws_ec2_tf_info
+        switch: off
       - IN: aws_vpc_tf_info
+        switch: off
       - IN: aws_ec2_tf_repo
         switch: off
       - IN: aws_ec2_tf_state
