@@ -65,3 +65,39 @@ jobs:
       - aws_ec2
       - aws
       - terraform
+
+# De-provision AWS ec2 with Terraform
+  - name: deprov_aws_ec2_tf
+    type: runSh
+    steps:
+      - IN: aws_vpc_tf_info
+      - IN: aws_ec2_tf_repo
+        switch: off
+      - IN: aws_ec2_tf_state
+        switch: off
+      - IN: aws_ec2_tf_creds
+        switch: off
+      - TASK:
+          name: deprov_inst
+          runtime:
+            options:
+              env:
+                - inst_type: "t2.micro"
+                - inst_ami: "ami-43a15f3e"
+                - aws_key_name: "dr_us_east_1"
+          script:
+            - pushd $(shipctl get_resource_state "aws_ec2_tf_repo")
+            - export AWS_ACCESS_KEY_ID=$(shipctl get_integration_resource_field aws_ec2_tf_creds "accessKey")
+            - export AWS_SECRET_ACCESS_KEY=$(shipctl get_integration_resource_field aws_ec2_tf_creds "secretKey")
+            - shipctl copy_file_from_resource_state aws_ec2_tf_state terraform.tfstate .
+            - shipctl replace terraform.tfvars
+            - terraform destroy -force -var-file=terraform.tfvars
+      - OUT: aws_ec2_tf_state
+    always:
+      script:
+        - shipctl copy_file_to_resource_state terraform.tfstate aws_ec2_tf_state
+        - popd
+    flags:
+      - aws_ec2
+      - aws
+      - terraform
