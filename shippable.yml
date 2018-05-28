@@ -94,7 +94,7 @@ jobs:
             - export AWS_SECRET_ACCESS_KEY=$(shipctl get_integration_resource_field aws_ec2_tf_creds "secretKey")
             - shipctl copy_file_from_resource_state aws_ec2_tf_state terraform.tfstate .
             - shipctl replace terraform.tfvars
-            - terraform plan -var-file=terraform.tfvars
+            - terraform init
             - terraform destroy -force -var-file=terraform.tfvars
       - OUT: aws_ec2_tf_state
     always:
