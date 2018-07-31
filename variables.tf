@@ -38,3 +38,7 @@ variable "vpc_public_sn_id" {
 variable "vpc_region" {
   description = "VPC region"
 }
+
+variable "public_ssh_key" {
+  description = "Public SSH key value"
+}
